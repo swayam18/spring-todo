@@ -11,15 +11,11 @@ public class TodoService {
 
     private List<Todo> todoList = new ArrayList<Todo>();
 
-    private Todo defaultTask = new Todo("Default TODO!!!");
-
     public List<Todo> getTodoList() {
-        todoList.add(defaultTask);
         return todoList;
     }
 
-    public void addTodo(String task) {
-        Todo todo = new Todo(task);
+    public void addTodo(Todo todo) {
         todoList.add(todo);
     }
 }

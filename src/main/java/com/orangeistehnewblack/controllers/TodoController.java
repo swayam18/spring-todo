@@ -5,9 +5,9 @@ import com.orangeistehnewblack.services.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -31,8 +31,13 @@ public class TodoController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String newTodo( @RequestParam(value="task") String task ) {
-        service.addTodo(task);
-        return "";
+    public String newTodo(@ModelAttribute Todo newTodo, Model model) {
+        service.addTodo(newTodo);
+
+        List<Todo> todoList = service.getTodoList();
+        model.addAttribute("todos", todoList);
+        model.addAttribute("newTodo", new Todo());
+
+        return "index";
     }
 }
