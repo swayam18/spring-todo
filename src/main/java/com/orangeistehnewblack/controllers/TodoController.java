@@ -24,20 +24,20 @@ public class TodoController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String get(Model model) {
-        List<Todo> todoList = service.getTodoList();
-        model.addAttribute("todos", todoList);
-        model.addAttribute("newTodo", new Todo());
+        setDefaultAttributes(model);
         return "index";
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public String newTodo(@ModelAttribute Todo newTodo, Model model) {
         service.addTodo(newTodo);
+        setDefaultAttributes(model);
+        return "index";
+    }
 
+    private void setDefaultAttributes(Model model) {
         List<Todo> todoList = service.getTodoList();
         model.addAttribute("todos", todoList);
         model.addAttribute("newTodo", new Todo());
-
-        return "index";
     }
 }
