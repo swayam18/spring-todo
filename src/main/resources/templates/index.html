@@ -5,8 +5,12 @@
     <title>To Do List</title>
 </head>
 <body>
+    <h1>To Do List:</h1>
     <ul th:each="todo : ${todos}">
-        <li th:text="${todo.task}"> Task! </li>
+        <li>
+            <input type="checkbox" th:field="${todo.done}" />
+            <span th:text="${todo.task}"></span>
+        </li>
     </ul>
     <form action="#" th:action="@{/}" th:object="${newTodo}" method="post">
         Task: <input type="text" th:field="*{task}" />

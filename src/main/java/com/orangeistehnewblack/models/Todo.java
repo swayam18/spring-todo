@@ -3,11 +3,11 @@ package com.orangeistehnewblack.models;
 public class Todo {
 
     private String task;
-    private boolean isDone;
+    private boolean done;
 
     public Todo(String task) {
         this.task = task;
-        this.isDone = false;
+        this.done = false;
     }
 
     public Todo() {
@@ -22,12 +22,12 @@ public class Todo {
         this.task = task;
     }
 
-    public boolean isDone() {
-        return isDone;
+    public boolean getDone() {
+        return done;
     }
 
     public void setDone(boolean done) {
-        isDone = done;
+        this.done = done;
     }
 
 }
