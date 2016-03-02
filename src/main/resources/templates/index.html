@@ -14,6 +14,11 @@
 
     <form action="#" th:object="${todoListViewModel}" th:action="@{/update}" method="post">
         <h2>Tasks:</h2>
+        <div>
+            [ <a href="/">All</a> |
+            <a href="/?filter=pending">Pending</a> |
+            <a href="/?filter=completed">Completed</a> ]
+        </div>
         <ul th:each="todo, stat : *{todos}">
             <li>
                 <input type="hidden" th:field="*{todos[__${stat.index}__].id}" />
@@ -24,6 +29,7 @@
             </li>
         </ul>
         <button name="updateList" type="submit">Update List</button>
+        <a href="/delete/completed">Remove Completed</a>
     </form>
 
 </body>

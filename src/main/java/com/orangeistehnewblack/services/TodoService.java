@@ -19,8 +19,15 @@ public class TodoService {
         this.repository = repository;
     }
 
-    public List<Todo> getTodoList() {
-        return repository.findAllByOrderByIdAsc();
+    public List<Todo> getTodoList(String category) {
+        switch(category) {
+            case "pending":
+                return repository.findAllByDoneOrderByIdAsc(false);
+            case "completed":
+                return repository.findAllByDoneOrderByIdAsc(true);
+            default:
+                return repository.findAllByOrderByIdAsc();
+        }
     }
 
     public void addTodo(Todo todo) {
@@ -35,5 +42,10 @@ public class TodoService {
 
     public void deleteTodo(Long todoId) {
         repository.delete(todoId);
+    }
+
+    public void deleteCompleted() {
+        List<Todo> completedTodos = repository.findAllByDone(true);
+        repository.deleteInBatch(completedTodos);
     }
 }

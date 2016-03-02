@@ -22,8 +22,8 @@ public class TodoController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public String get(Model model) {
-        setDefaultAttributes(model);
+    public String get(@RequestParam(value = "filter", defaultValue = "all", required = false) String filterBy, Model model) {
+        setDefaultAttributes(model, filterBy);
         return "index";
     }
 
@@ -45,6 +45,13 @@ public class TodoController {
         return "redirect:/";
     }
 
+    @RequestMapping("delete/completed")
+    public String deleteCompletedTodos() {
+        service.deleteCompleted();
+
+        return "redirect:/";
+    }
+
     @RequestMapping("delete/{todoId}")
     public String deleteTodo(@PathVariable Long todoId) {
         service.deleteTodo(todoId);
@@ -52,8 +59,8 @@ public class TodoController {
         return "redirect:/";
     }
 
-    private void setDefaultAttributes(Model model) {
-        List<Todo> todoList = service.getTodoList();
+    private void setDefaultAttributes(Model model, String filterByCategory) {
+        List<Todo> todoList = service.getTodoList(filterByCategory);
         TodoListViewModel todoListViewModel = new TodoListViewModel(todoList);
         model.addAttribute("todoListViewModel", todoListViewModel);
         model.addAttribute("newTodo", new Todo());
