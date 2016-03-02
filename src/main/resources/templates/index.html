@@ -6,15 +6,22 @@
 </head>
 <body>
     <h1>To Do List:</h1>
-    <ul th:each="todo : ${todos}">
-        <li>
-            <input type="checkbox" th:field="${todo.done}" />
-            <span th:text="${todo.task}"></span>
-        </li>
-    </ul>
+
     <form action="#" th:action="@{/}" th:object="${newTodo}" method="post">
         Task: <input type="text" th:field="*{task}" />
         <button name="addTask" type="submit">Add</button>
     </form>
+
+    <form action="#" th:object="${todoListViewModel}" th:action="@{/update}" method="post">
+        <h2>Tasks:</h2>
+        <ul th:each="todo, stat : *{todos}">
+            <li>
+                <input type="checkbox" th:field="*{todos[__${stat.index}__].done}" />
+                <span th:text="${todo.task}"></span>
+            </li>
+        </ul>
+        <button name="updateList" type="submit">Update List</button>
+    </form>
+
 </body>
 </html>

@@ -2,6 +2,7 @@ package com.orangeistehnewblack.controllers;
 
 import com.orangeistehnewblack.models.Todo;
 import com.orangeistehnewblack.services.TodoService;
+import com.orangeistehnewblack.viewmodels.TodoListViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,13 +32,25 @@ public class TodoController {
     @RequestMapping(method = RequestMethod.POST)
     public String newTodo(@ModelAttribute Todo newTodo, Model model) {
         service.addTodo(newTodo);
-        setDefaultAttributes(model);
-        return "index";
+
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public String updateTodo(@ModelAttribute TodoListViewModel todoListViewModel, Model model) {
+        List<Todo> updatedTodos = todoListViewModel.getTodos();
+
+        for(int i = 0; i < updatedTodos.size(); i++) {
+            service.setDone(i, updatedTodos.get(i).getDone());
+        }
+
+        return "redirect:/";
     }
 
     private void setDefaultAttributes(Model model) {
         List<Todo> todoList = service.getTodoList();
-        model.addAttribute("todos", todoList);
+        TodoListViewModel todoListViewModel = new TodoListViewModel(todoList);
+        model.addAttribute("todoListViewModel", todoListViewModel);
         model.addAttribute("newTodo", new Todo());
     }
 }

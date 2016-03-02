@@ -18,4 +18,8 @@ public class TodoService {
     public void addTodo(Todo todo) {
         todoList.add(todo);
     }
+
+    public void setDone(int index, boolean done) {
+        todoList.get(index).setDone(done);
+    }
 }
