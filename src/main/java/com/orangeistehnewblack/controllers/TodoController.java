@@ -14,12 +14,8 @@ import java.util.List;
 @RequestMapping("/")
 public class TodoController {
 
-    private TodoService service;
-
     @Autowired
-    public TodoController(TodoService service) {
-        this.service = service;
-    }
+    private TodoService service;
 
     @RequestMapping(method = RequestMethod.GET)
     public String get(@RequestParam(value = "filter", defaultValue = "all", required = false) String filterBy, Model model) {
