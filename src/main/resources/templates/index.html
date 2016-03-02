@@ -16,6 +16,7 @@
         <h2>Tasks:</h2>
         <ul th:each="todo, stat : *{todos}">
             <li>
+                <input type="hidden" th:field="*{todos[__${stat.index}__].id}" />
                 <input type="checkbox" th:field="*{todos[__${stat.index}__].done}" />
                 <span th:unless="${todo.done}" th:text="${todo.task}"></span>
                 <strike th:if="${todo.done}" th:text="${todo.task}"></strike>

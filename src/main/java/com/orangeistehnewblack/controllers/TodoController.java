@@ -40,8 +40,8 @@ public class TodoController {
     public String updateTodo(@ModelAttribute TodoListViewModel todoListViewModel, Model model) {
         List<Todo> updatedTodos = todoListViewModel.getTodos();
 
-        for(int i = 0; i < updatedTodos.size(); i++) {
-            service.setDone(i, updatedTodos.get(i).getDone());
+        for(Todo todo: updatedTodos) {
+            service.setDone(todo.getId(), todo.getDone());
         }
 
         return "redirect:/";
