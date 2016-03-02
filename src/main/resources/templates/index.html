@@ -17,7 +17,8 @@
         <ul th:each="todo, stat : *{todos}">
             <li>
                 <input type="checkbox" th:field="*{todos[__${stat.index}__].done}" />
-                <span th:text="${todo.task}"></span>
+                <span th:unless="${todo.done}" th:text="${todo.task}"></span>
+                <strike th:if="${todo.done}" th:text="${todo.task}"></strike>
             </li>
         </ul>
         <button name="updateList" type="submit">Update List</button>
