@@ -32,4 +32,8 @@ public class TodoService {
         todo.setDone(done);
         repository.save(todo);
     }
+
+    public void deleteTodo(Long todoId) {
+        repository.delete(todoId);
+    }
 }

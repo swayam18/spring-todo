@@ -6,9 +6,7 @@ import com.orangeistehnewblack.viewmodels.TodoListViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,6 +41,13 @@ public class TodoController {
         for(Todo todo: updatedTodos) {
             service.setDone(todo.getId(), todo.getDone());
         }
+
+        return "redirect:/";
+    }
+
+    @RequestMapping("delete/{todoId}")
+    public String deleteTodo(@PathVariable Long todoId) {
+        service.deleteTodo(todoId);
 
         return "redirect:/";
     }

@@ -20,6 +20,7 @@
                 <input type="checkbox" th:field="*{todos[__${stat.index}__].done}" />
                 <span th:unless="${todo.done}" th:text="${todo.task}"></span>
                 <strike th:if="${todo.done}" th:text="${todo.task}"></strike>
+                <a th:href="'/delete/' + ${todo.id}">×</a>
             </li>
         </ul>
         <button name="updateList" type="submit">Update List</button>
