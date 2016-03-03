@@ -1,10 +1,13 @@
 package com.orangeistehnewblack.controllers;
 
+import com.orangeistehnewblack.models.CurrentUser;
 import com.orangeistehnewblack.models.Todo;
+import com.orangeistehnewblack.models.User;
 import com.orangeistehnewblack.services.TodoService;
 import com.orangeistehnewblack.viewmodels.TodoListViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@PreAuthorize("hasAuthority('USER')")
 @RequestMapping("/")
 public class TodoController {
 
@@ -19,19 +23,27 @@ public class TodoController {
     private TodoService service;
 
     @RequestMapping(method = RequestMethod.GET)
-    public String get(@RequestParam(value = "filter", defaultValue = "all", required = false) String filterBy, Model model) {
-        setDefaultAttributes(model, filterBy);
+    public String get(@RequestParam(value = "filter", defaultValue = "all", required = false) String filterByCategory, Authentication authentication, Model model) {
+        User currentUser = ((CurrentUser) authentication.getPrincipal()).getUser();
+
+        List<Todo> todoList = service.getTodoList(currentUser, filterByCategory);
+        TodoListViewModel todoListViewModel = new TodoListViewModel(todoList);
+
+        model.addAttribute("todoListViewModel", todoListViewModel);
+        model.addAttribute("newTodo", new Todo());
+
         return "index";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String newTodo(@ModelAttribute Todo newTodo, Model model) {
+    public String newTodo(@ModelAttribute Todo newTodo, Authentication authentication, Model model) {
+        User currentUser = ((CurrentUser) authentication.getPrincipal()).getUser();
+        newTodo.setUser(currentUser);
         service.addTodo(newTodo);
 
         return "redirect:/";
     }
 
-    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "update", method = RequestMethod.POST)
     public String updateTodo(@ModelAttribute TodoListViewModel todoListViewModel, Model model) {
         List<Todo> updatedTodos = todoListViewModel.getTodos();
@@ -55,12 +67,5 @@ public class TodoController {
         service.deleteTodo(todoId);
 
         return "redirect:/";
-    }
-
-    private void setDefaultAttributes(Model model, String filterByCategory) {
-        List<Todo> todoList = service.getTodoList(filterByCategory);
-        TodoListViewModel todoListViewModel = new TodoListViewModel(todoList);
-        model.addAttribute("todoListViewModel", todoListViewModel);
-        model.addAttribute("newTodo", new Todo());
     }
 }

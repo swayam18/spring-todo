@@ -10,6 +10,8 @@ import java.util.List;
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     public List<Todo> findAllByOrderByIdAsc();
     public List<Todo> findAllByDone(boolean done);
-
     List<Todo> findAllByDoneOrderByIdAsc(boolean done);
+
+    List<Todo> findAllByUserIdAndDoneOrderByIdAsc(long userId, boolean done);
+    public List<Todo> findAllByUserIdOrderByIdAsc(long userId);
 }

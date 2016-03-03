@@ -47,4 +47,8 @@ public class User {
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 
+    public List<Todo> getTodos() {
+        return todos;
+    }
+
 }

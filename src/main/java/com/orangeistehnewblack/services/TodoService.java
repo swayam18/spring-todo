@@ -1,6 +1,7 @@
 package com.orangeistehnewblack.services;
 
 import com.orangeistehnewblack.models.Todo;
+import com.orangeistehnewblack.models.User;
 import com.orangeistehnewblack.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,19 +16,18 @@ public class TodoService {
     @Autowired
     private UserService userService;
 
-    public List<Todo> getTodoList(String category) {
+    public List<Todo> getTodoList(User user, String category) {
         switch(category) {
             case "pending":
-                return repository.findAllByDoneOrderByIdAsc(false);
+                return repository.findAllByUserIdAndDoneOrderByIdAsc(user.getId(), false);
             case "completed":
-                return repository.findAllByDoneOrderByIdAsc(true);
+                return repository.findAllByUserIdAndDoneOrderByIdAsc(user.getId(), true);
             default:
-                return repository.findAllByOrderByIdAsc();
+                return repository.findAllByUserIdOrderByIdAsc(user.getId());
         }
     }
 
     public void addTodo(Todo todo) {
-        todo.setUser(userService.findOrCreateDefaultUser());
         repository.save(todo);
     }
 
