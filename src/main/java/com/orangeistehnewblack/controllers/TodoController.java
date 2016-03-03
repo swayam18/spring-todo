@@ -4,6 +4,7 @@ import com.orangeistehnewblack.models.Todo;
 import com.orangeistehnewblack.services.TodoService;
 import com.orangeistehnewblack.viewmodels.TodoListViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,7 @@ public class TodoController {
         return "redirect:/";
     }
 
+    @PreAuthorize("hasAuthority('USER')")
     @RequestMapping(value = "update", method = RequestMethod.POST)
     public String updateTodo(@ModelAttribute TodoListViewModel todoListViewModel, Model model) {
         List<Todo> updatedTodos = todoListViewModel.getTodos();
