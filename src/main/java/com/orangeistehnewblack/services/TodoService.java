@@ -12,6 +12,9 @@ public class TodoService {
     @Autowired
     private TodoRepository repository;
 
+    @Autowired
+    private UserService userService;
+
     public List<Todo> getTodoList(String category) {
         switch(category) {
             case "pending":
@@ -24,6 +27,7 @@ public class TodoService {
     }
 
     public void addTodo(Todo todo) {
+        todo.setUser(userService.findOrCreateDefaultUser());
         repository.save(todo);
     }
 
