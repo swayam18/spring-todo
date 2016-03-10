@@ -13,9 +13,6 @@ public class TodoService {
     @Autowired
     private TodoRepository repository;
 
-    @Autowired
-    private UserService userService;
-
     public List<Todo> getTodoList(User user, String category) {
         switch(category) {
             case "pending":
