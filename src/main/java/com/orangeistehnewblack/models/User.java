@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "todo_user")
-@JsonIgnoreProperties(value = { "id", "password", "email" })
+@JsonIgnoreProperties(value = { "password", "email" })
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
