@@ -1,13 +1,14 @@
 package com.orangeistehnewblack.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "todo_user")
-public class User {
+@JsonIgnoreProperties(value = { "id", "password", "email" })
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -15,9 +16,6 @@ public class User {
     private String name;
     private String email;
     private String password;
-
-    @OneToMany(mappedBy = "user")
-    private List<Todo> todos;
 
     public long getId() {
         return id;
@@ -45,10 +43,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = new BCryptPasswordEncoder().encode(password);
-    }
-
-    public List<Todo> getTodos() {
-        return todos;
     }
 
 }
