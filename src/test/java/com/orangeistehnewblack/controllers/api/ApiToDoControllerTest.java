@@ -41,21 +41,25 @@ public class ApiToDoControllerTest {
 
     private Todo task1;
     private Todo task2;
+    private String userPassword;
+    private String userEmail;
+    private FormAuthConfig formAuthConfig;
 
     @Before
     public void setUp() {
         repository.deleteAll();
         userRepository.deleteAll();
+        userEmail = "me@example.com";
+        userPassword = "123456";
+        formAuthConfig = new FormAuthConfig("/users/signIn", "email", "password");
 
         User user = new User();
-        user.setEmail("me@example.com");
-        user.setPassword("123456");
+        user.setEmail(userEmail);
+        user.setPassword(userPassword);
         userRepository.save(user);
 
-        task1 = new Todo("Buy milk");
-        task1.setUser(user);
-        task2 = new Todo("Drink carrot juice");
-        task2.setUser(user);
+        task1 = new Todo(user, "Buy milk");
+        task2 = new Todo(user, "Drink carrot juice");
 
         repository.save(Arrays.asList(task1, task2));
     }
@@ -63,23 +67,34 @@ public class ApiToDoControllerTest {
     @Test
     public void redirectsToSignInIfNotAuthenticated() {
         given()
-                .port(port).redirects().follow(false).
-                when()
-                .get("/api/todo").
-                then()
-                .statusCode(HttpStatus.SC_MOVED_TEMPORARILY)
-                .header("Location", containsString("/users/signIn"));
+            .port(port).redirects().follow(false).
+        when()
+            .get("/api/todo").
+        then()
+            .statusCode(HttpStatus.SC_MOVED_TEMPORARILY)
+            .header("Location", containsString("/users/signIn"));
     }
 
     @Test
     public void canFetchAllTodos() {
-        String password = "123456";
         given()
-            .port(port).auth().form("me@example.com", password, new FormAuthConfig("/users/signIn", "email", "password")).
+            .port(port).auth().form(userEmail, userPassword, formAuthConfig).
         when().
             get("/api/todo").
         then().
             statusCode(HttpStatus.SC_OK).
             body("task", hasItems("Buy milk", "Drink carrot juice"));
+    }
+
+    @Test
+    public void addsNewTodo() {
+        given()
+            .param("task", "New Task")
+            .port(port).auth().form(userEmail, userPassword, formAuthConfig).
+        when()
+            .post("/api/todo").
+        then()
+            .statusCode(HttpStatus.SC_OK)
+            .body("task", containsString("New Task"));
     }
 }

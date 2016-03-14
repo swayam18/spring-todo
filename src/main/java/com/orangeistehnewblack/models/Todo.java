@@ -24,6 +24,12 @@ public class Todo {
         this.id = id;
     }
 
+    public Todo(User user, String task) {
+        this.user = user;
+        this.task = task;
+        this.done = false;
+    }
+
     public Todo(String task) {
         this.task = task;
         this.done = false;
