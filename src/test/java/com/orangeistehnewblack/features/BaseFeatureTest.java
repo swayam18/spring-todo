@@ -1,6 +1,7 @@
 package com.orangeistehnewblack.features;
 
 import com.orangeistehnewblack.TodoApplication;
+import com.orangeistehnewblack.models.User;
 import com.orangeistehnewblack.repository.TodoRepository;
 import com.orangeistehnewblack.repository.UserRepository;
 import org.fluentlenium.adapter.FluentTest;
@@ -36,4 +37,25 @@ public abstract class BaseFeatureTest extends FluentTest{
 
     @Value("${local.server.port}")
     protected int port;
+
+    protected void clearDatabase() {
+        todoRepository.deleteAll();
+        userRepository.deleteAll();
+    }
+
+    protected void prepareUser(String userName, String userEmail, String userPassword) {
+        User user = new User();
+        user.setEmail(userEmail);
+        user.setPassword(userPassword);
+        user.setName(userName);
+        userRepository.save(user);
+    }
+
+    protected void login(String userEmail, String userPassword) {
+        String url = "http://localhost:" + port + "/users/signIn";
+        goTo(url);
+        fill("#email").with(userEmail);
+        fill("#password").with(userPassword);
+        submit("#login");
+    }
 }

@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8" />
     <title>To Do List</title>
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js" integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00=" crossorigin="anonymous"></script>
+    <script src="javascripts/index.js"></script>
 </head>
 <body>
     <h1>To Do List (<span class="username" th:text="${currentUser.name}"></span>):</h1>
 
-    <form action="#" th:action="@{/}" th:object="${newTodo}" method="post">
+    <form id="new-todo-form" action="#" th:action="@{/}" th:object="${newTodo}" method="post">
         Task: <input type="text" th:field="*{task}" />
-        <button name="addTask" type="submit">Add</button>
+        <button id="add-task" name="addTask" type="submit">Add</button>
     </form>
 
     <form action="#" th:object="${todoListViewModel}" th:action="@{/update}" method="post">
