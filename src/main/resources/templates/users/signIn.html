@@ -8,7 +8,6 @@
 <h1>Log In</h1>
 
 <form action="#" th:action="@{/users/signIn}" th:object="${form}" method="post">
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <section>
         Email: <input type="text" th:field="*{email}" />
         <div>&nbsp;</div>
@@ -17,7 +16,7 @@
         Password: <input type="password" th:field="*{password}" />
         <div>&nbsp;</div>
     </section>
-    <button name="create" type="submit">Login</button> |
+    <button id="login" name="create" type="submit">Login</button> |
     <a href="/users/new">Sign Up</a>
 </form>
 

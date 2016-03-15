@@ -29,6 +29,7 @@ public class TodoController {
         List<Todo> todoList = service.getTodoList(currentUser, filterByCategory);
         TodoListViewModel todoListViewModel = new TodoListViewModel(todoList);
 
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("todoListViewModel", todoListViewModel);
         model.addAttribute("newTodo", new Todo());
 
