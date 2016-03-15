@@ -33,7 +33,6 @@
     </form>
 
     <form action="#" th:action="@{/logout}" method="post">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button name="addTask" type="submit">logout</button>
     </form>
 
