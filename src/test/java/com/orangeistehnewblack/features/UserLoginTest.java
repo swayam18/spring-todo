@@ -29,7 +29,7 @@ public class UserLoginTest extends BaseFeatureTest {
 
     @Test
     public void userCanLogin() {
-        String url = "http://localhost:" + port + "/users/signIn";
+        String url = String.format("http://localhost:%s/users/signIn", port);
         goTo(url);
         fill("#email").with(userEmail);
         fill("#password").with(userPassword);
