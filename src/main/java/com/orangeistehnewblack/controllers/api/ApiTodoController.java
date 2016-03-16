@@ -10,15 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/todo")
+@RequestMapping(value = "/api/todo", produces = MediaType.APPLICATION_JSON_VALUE)
 @PreAuthorize("hasAuthority('USER')")
 public class ApiTodoController {
     @Autowired
@@ -27,7 +26,7 @@ public class ApiTodoController {
     @Autowired
     private TodoService service;
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET)
     List<Todo> todos(@RequestParam(value = "filter", defaultValue = "all", required = false) String filterByCategory, Authentication authentication) {
         User currentUser = getUser(authentication);
 
@@ -42,6 +41,13 @@ public class ApiTodoController {
         service.addTodo(newTodo);
 
         return newTodo;
+    }
+
+    @RequestMapping(value = "/{todoId}", method = RequestMethod.DELETE)
+    public Map<String, String> deleteTodo(@PathVariable Long todoId) {
+        service.deleteTodo(todoId);
+
+        return Collections.singletonMap("result", "deleted");
     }
 
     private User getUser(Authentication authentication) {

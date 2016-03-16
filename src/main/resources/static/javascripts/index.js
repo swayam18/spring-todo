@@ -4,8 +4,25 @@ var createNewTask = function(event) {
     var csrf = getCsrfToken("#new-todo-form")
     $.post("/api/todo", { task: task, _csrf: csrf })
         .done(function(data) {
+            $("#task").val("");
             addTodo(data);
         });
+}
+
+var deleteTask = function (event) {
+    event.preventDefault();
+
+    var csrf = getCsrfToken("#new-todo-form")
+    var id = $(this).data("id");
+    $.ajax({
+        url: "/api/todo/"+ id,
+        method: "DELETE",
+        headers: {
+            "X-CSRF-TOKEN": csrf
+        }
+    }).done(function(data) {
+        $("#todo-item-"+id).remove();
+    });
 }
 
 var todoTemplate;
@@ -22,6 +39,7 @@ $(document).ready(function() {
     todoTemplate = Handlebars.compile(source);
 
     $("#new-todo-form").on("submit", createNewTask );
+    $(document).on("click", ".delete-link", deleteTask);
 });
 
 var getCsrfToken = function(formSelector) {

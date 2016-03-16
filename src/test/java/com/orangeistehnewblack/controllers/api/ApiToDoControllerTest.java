@@ -73,4 +73,15 @@ public class ApiToDoControllerTest extends BaseController {
             .statusCode(HttpStatus.SC_OK)
             .body("task", containsString("New Task"));
     }
+
+    @Test
+    public void deletesTodo() {
+        given()
+            .port(port).auth().form(userEmail, userPassword, formAuthConfig).
+        when()
+            .delete("/api/todo/" + task1.getId()).
+        then()
+            .statusCode(HttpStatus.SC_OK)
+            .body("result", containsString("deleted"));
+    }
 }

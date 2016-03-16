@@ -23,12 +23,12 @@
             <a href="/?filter=completed">Completed</a> ]
         </div>
         <ul id="todo-list">
-            <li th:each="todo : *{todosMap}">
+            <li th:each="todo : *{todosMap}" th:id="todo-item-__${todo.value.id}__">
                 <input type="hidden" th:field="*{todosMap[__${todo.key}__].id}" />
                 <input type="checkbox" th:field="*{todosMap[__${todo.key}__].done}" />
                 <span th:unless="${todo.value.done}" th:text="${todo.value.task}"></span>
                 <strike th:if="${todo.value.done}" th:text="${todo.value.task}"></strike>
-                <a th:href="'/delete/' + ${todo.value.id}">×</a>
+                <a class="delete-link" th:attr="data-id=${todo.value.id}" th:href="'/delete/' + ${todo.value.id}">×</a>
             </li>
         </ul>
         <button id="updateListButton" name="updateList" type="submit">Update List</button>
@@ -41,7 +41,7 @@
 
     <script id="todo-template" type="text/x-handlebars-template">
         {{#each todos}}
-            <li>
+            <li id="todo-item-{{id}}">
                 <input type="hidden" name="todosMap[{{id}}].id" value="{{id}}" />
                 {{#if done}}
                     <input type="checkbox" name="todosMap[{{id}}].done" value="true" checked="checked" />
@@ -51,7 +51,7 @@
                     <span>{{task}}</span>
                 {{/if}}
                 <input type="hidden" name="_todosMap[{{id}}].done" value="on" />
-                <a href="/delete/{{id}}">×</a>
+                <a class="delete-link" data-id="{{id}}" href="/delete/{{id}}">×</a>
             </li>
         {{/each}}
     </script>
