@@ -23,15 +23,15 @@
             <a href="/?filter=completed">Completed</a> ]
         </div>
         <ul id="todo-list">
-            <li th:each="todo, stat : *{todos}">
-                <input type="hidden" th:field="*{todos[__${stat.index}__].id}" />
-                <input type="checkbox" th:field="*{todos[__${stat.index}__].done}" />
-                <span th:unless="${todo.done}" th:text="${todo.task}"></span>
-                <strike th:if="${todo.done}" th:text="${todo.task}"></strike>
-                <a th:href="'/delete/' + ${todo.id}">×</a>
+            <li th:each="todo : *{todosMap}">
+                <input type="hidden" th:field="*{todosMap[__${todo.key}__].id}" />
+                <input type="checkbox" th:field="*{todosMap[__${todo.key}__].done}" />
+                <span th:unless="${todo.value.done}" th:text="${todo.value.task}"></span>
+                <strike th:if="${todo.value.done}" th:text="${todo.value.task}"></strike>
+                <a th:href="'/delete/' + ${todo.value.id}">×</a>
             </li>
         </ul>
-        <button name="updateList" type="submit">Update List</button>
+        <button id="updateListButton" name="updateList" type="submit">Update List</button>
         <a href="/delete/completed">Remove Completed</a>
     </form>
 
@@ -42,15 +42,15 @@
     <script id="todo-template" type="text/x-handlebars-template">
         {{#each todos}}
             <li>
-                <input type="hidden" name="todos[{{../startingIndex}}].id" value="{{id}}" />
+                <input type="hidden" name="todosMap[{{id}}].id" value="{{id}}" />
                 {{#if done}}
-                    <input type="checkbox" name="todos[{{../startingIndex}}].done" value="true" checked="checked" />
+                    <input type="checkbox" name="todosMap[{{id}}].done" value="true" checked="checked" />
                     <strike>{{task}}</strike>
                 {{else}}
-                    <input type="checkbox" name="todos[{{../startingIndex}}].done" value="true" />
+                    <input type="checkbox" name="todosMap[{{id}}].done" value="true" />
                     <span>{{task}}</span>
                 {{/if}}
-                <input type="hidden" name="_todos[{{../startingIndex}}].done" value="on" />
+                <input type="hidden" name="_todosMap[{{id}}].done" value="on" />
                 <a href="/delete/{{id}}">×</a>
             </li>
         {{/each}}

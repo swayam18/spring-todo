@@ -43,12 +43,12 @@ public abstract class BaseFeatureTest extends FluentTest{
         userRepository.deleteAll();
     }
 
-    protected void prepareUser(String userName, String userEmail, String userPassword) {
+    protected User prepareUser(String userName, String userEmail, String userPassword) {
         User user = new User();
         user.setEmail(userEmail);
         user.setPassword(userPassword);
         user.setName(userName);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     protected void login(String userEmail, String userPassword) {

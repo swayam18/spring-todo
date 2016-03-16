@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.TreeMap;
 
 @Controller
 @PreAuthorize("hasAuthority('USER')")
@@ -47,9 +48,10 @@ public class TodoController {
 
     @RequestMapping(value = "update", method = RequestMethod.POST)
     public String updateTodo(@ModelAttribute TodoListViewModel todoListViewModel, Model model) {
-        List<Todo> updatedTodos = todoListViewModel.getTodos();
+        TreeMap<Long, Todo> updatedTodos = todoListViewModel.getTodosMap();
 
-        for(Todo todo: updatedTodos) {
+        for(Long id: updatedTodos.keySet()) {
+            Todo todo = updatedTodos.get(id);
             service.setDone(todo.getId(), todo.getDone());
         }
 

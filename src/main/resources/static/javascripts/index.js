@@ -11,7 +11,7 @@ var createNewTask = function(event) {
 var todoTemplate;
 var addTodo = function(todo) {
     var startingIndex = $("#todo-list li").length;
-    var context = {startingIndex: startingIndex, todos: [todo]};
+    var context = {todos: [todo]};
 
     $("#todo-list").append(todoTemplate(context));
 }
