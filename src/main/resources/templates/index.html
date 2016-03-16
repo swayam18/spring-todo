@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>To Do List</title>
-    <script src="https://code.jquery.com/jquery-2.2.1.min.js" integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00=" crossorigin="anonymous"></script>
+    <script src="webjars/jquery/2.2.1/jquery.min.js"></script>
+    <script src="webjars/handlebars/4.0.5/handlebars.min.js"></script>
     <script src="javascripts/index.js"></script>
 </head>
 <body>
@@ -21,8 +22,8 @@
             <a href="/?filter=pending">Pending</a> |
             <a href="/?filter=completed">Completed</a> ]
         </div>
-        <ul th:each="todo, stat : *{todos}">
-            <li>
+        <ul id="todo-list">
+            <li th:each="todo, stat : *{todos}">
                 <input type="hidden" th:field="*{todos[__${stat.index}__].id}" />
                 <input type="checkbox" th:field="*{todos[__${stat.index}__].done}" />
                 <span th:unless="${todo.done}" th:text="${todo.task}"></span>
@@ -38,5 +39,21 @@
         <button name="addTask" type="submit">logout</button>
     </form>
 
+    <script id="todo-template" type="text/x-handlebars-template">
+        {{#each todos}}
+            <li>
+                <input type="hidden" name="todos[{{../startingIndex}}].id" value="{{id}}" />
+                {{#if done}}
+                    <input type="checkbox" name="todos[{{../startingIndex}}].done" value="true" checked="checked" />
+                    <strike>{{task}}</strike>
+                {{else}}
+                    <input type="checkbox" name="todos[{{../startingIndex}}].done" value="true" />
+                    <span>{{task}}</span>
+                {{/if}}
+                <input type="hidden" name="_todos[{{../startingIndex}}].done" value="on" />
+                <a href="/delete/{{id}}">×</a>
+            </li>
+        {{/each}}
+    </script>
 </body>
 </html>
